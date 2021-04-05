@@ -9,6 +9,8 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
+    "spotify-web-api-node": "^5.0.2",
+    "web-api-auth-examples": "github:spotify/web-api-auth-examples",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
