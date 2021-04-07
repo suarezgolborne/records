@@ -52,12 +52,14 @@ h2 {
   position: absolute;
   width: auto;
   bottom: 2.4em;
+  top: unset;
   text-align: center;
 
   @media (min-width: 670px) {
     text-align: right;
     top: 1.4em;
     right: 1.9em;
+    bottom: unset;
   }
 }
 
@@ -139,11 +141,11 @@ button {
   z-index: -1;
   filter: grayscale(1) brightness(0.3);
 
-  @media (min-width: 920px) {
-    background-position-x: calc(-15vh + 20%);
-    background-size: 120vw;
-    background-position-y: calc(-5vh + 20%);
-  }
+  // @media (min-width: 920px) {
+  //   background-position-x: calc(-15vh + 20%);
+  //   background-size: 120vw;
+  //   background-position-y: calc(-5vh + 20%);
+  // }
 }
 
 .bgtint {

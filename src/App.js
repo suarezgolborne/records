@@ -19,13 +19,11 @@ const App = () => {
   const [currentAlbum, setCurrentAlbum] = useState(null);
   const [totalAlbums, setTotalAlbums] = useState("");
   const [albumChartPosition, setAlbumChartPosition] = useState(null);
-  const [device, setDevice] = useState(false);
+  const [device, setDevice] = useState();
   const [bgImage, setBgImage] = useState(null);
+  const [token, setToken] = useState();
 
-  const token = Cookies.get("spotifyAuthToken");
-
-  const redirect_uri = "https://records-4fbw6u5lj-suarezgolborne.vercel.app/";
-  var s = new spotifyApi();
+  const s = new spotifyApi();
   s.setAccessToken(token);
 
   const getArtistImage = (data) => {
@@ -40,51 +38,84 @@ const App = () => {
   };
 
   useEffect(() => {
-    console.log("useeffect");
-    s.getMyDevices(function (err, data) {
-      if (err) console.error(err);
-      else {
-        let activeDevice = data.devices.find((device) => device.is_active);
-        let inactiveDevice = data.devices.find((device) => !device.is_active);
-
-        // sort by type and by active status
-        if (data.devices.length > 0) {
-          if (activeDevice?.is_active) {
-            setDevice(activeDevice.id);
-          } else {
-            setDevice(inactiveDevice.id);
-            s.transferMyPlayback(inactiveDevice);
-          }
-        }
-      }
-    });
-
-    s.getPlaylist("5Y1aNHCMgst2Yf7Kog6bOk", function (err, data) {
-      console.log("getplaylist");
-
-      if (err) console.error(err);
-      else {
-        setTotalAlbums(data.tracks.total);
-        s.getPlaylistTracks(
-          "5Y1aNHCMgst2Yf7Kog6bOk",
-          {
-            limit: 1,
-            offset: Math.floor(Math.random() * data.tracks.total),
-          },
-          function (err, data) {
-            if (err) console.error(err);
-            else {
-              setCurrentAlbum(data.items[0].track);
-              setAlbumChartPosition(data.offset);
-              getArtistImage(data);
-            }
-          }
-        );
-      }
-    });
+    setToken(Cookies.get("spotifyAuthToken"));
   }, []);
 
-  const startAlbum = (uri, token) => {
+  useEffect(() => {
+    if (token) {
+      console.log("useeffect", token);
+      s.getMyDevices(function (err, data) {
+        if (err) console.error(err);
+        else {
+          let activeDevice = data.devices.find((device) => device.is_active);
+          let inactiveDevice = data.devices.find((device) => !device.is_active);
+
+          console.log(inactiveDevice.id, inactiveDevice);
+          // sort by type and by active status
+          if (data.devices.length > 0) {
+            if (activeDevice?.is_active) {
+              setDevice(activeDevice.id);
+            } else {
+              setDevice(inactiveDevice.id);
+              s.transferMyPlayback(JSON.parse(inactiveDevice.id));
+            }
+          }
+        }
+      });
+
+      s.getPlaylist("5Y1aNHCMgst2Yf7Kog6bOk", function (err, data) {
+        console.log("getplaylist");
+
+        if (err) console.error(err);
+        else {
+          setTotalAlbums(data.tracks.total);
+          s.getPlaylistTracks(
+            "5Y1aNHCMgst2Yf7Kog6bOk",
+            {
+              limit: 1,
+              offset: Math.floor(Math.random() * data.tracks.total),
+            },
+            function (err, data) {
+              if (err) console.error(err);
+              else {
+                setCurrentAlbum(data.items[0].track);
+                setAlbumChartPosition(data.offset);
+                getArtistImage(data);
+              }
+            }
+          );
+        }
+      });
+    }
+  }, [token]);
+
+  // useEffect(() => {
+  //   s.getPlaylist("5Y1aNHCMgst2Yf7Kog6bOk", function (err, data) {
+  //     console.log("getplaylist");
+
+  //     if (err) console.error(err);
+  //     else {
+  //       setTotalAlbums(data.tracks.total);
+  //       s.getPlaylistTracks(
+  //         "5Y1aNHCMgst2Yf7Kog6bOk",
+  //         {
+  //           limit: 1,
+  //           offset: Math.floor(Math.random() * data.tracks.total),
+  //         },
+  //         function (err, data) {
+  //           if (err) console.error(err);
+  //           else {
+  //             setCurrentAlbum(data.items[0].track);
+  //             setAlbumChartPosition(data.offset);
+  //             getArtistImage(data);
+  //           }
+  //         }
+  //       );
+  //     }
+  //   });
+  // }, [token]);
+
+  const startAlbum = (uri) => {
     console.log("startalbum");
 
     const PlayParameterObject = {
@@ -166,7 +197,7 @@ const App = () => {
             {isPlaying ? (
               <button
                 onClick={() =>
-                  pauseAlbum(currentAlbum?.album.external_urls.spotify, token)
+                  pauseAlbum(currentAlbum?.album.external_urls.spotify)
                 }
               >
                 <Pause
@@ -179,7 +210,7 @@ const App = () => {
             ) : (
               <button
                 onClick={() =>
-                  startAlbum(currentAlbum?.album.external_urls.spotify, token)
+                  startAlbum(currentAlbum?.album.external_urls.spotify)
                 }
               >
                 <Play
@@ -200,7 +231,7 @@ const App = () => {
             </div>
             <button
               onClick={() =>
-                shuffleAlbum(currentAlbum?.album.external_urls.spotify, token)
+                shuffleAlbum(currentAlbum?.album.external_urls.spotify)
               }
             >
               <Dice
@@ -242,6 +273,7 @@ const App = () => {
           <SpotifyAuth
             redirectUri={REACT_APP_REDIRECT_URI}
             clientID={REACT_APP_CLIENT_ID}
+            title={"Fortsätt med Spotify"}
             scopes={[
               Scopes.playlistReadPrivate,
               Scopes.userModifyPlaybackState,
