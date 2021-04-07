@@ -34,6 +34,24 @@ const App = () => {
     });
   };
   useEffect(() => {
+    s.getMyDevices(function (err, data) {
+      if (err) console.error(err);
+      else {
+        let activeDevice = data.devices.find((device) => device.is_active);
+        let inactiveDevice = data.devices.find((device) => !device.is_active);
+
+        // sort by type and by active status
+        if (data.devices.length > 0) {
+          if (activeDevice?.is_active) {
+            setDevice(activeDevice.id);
+          } else {
+            setDevice(inactiveDevice.id);
+            s.transferMyPlayback(inactiveDevice);
+          }
+        }
+      }
+    });
+
     s.getPlaylist("5Y1aNHCMgst2Yf7Kog6bOk", function (err, data) {
       if (err) console.error(err);
       else {
@@ -56,24 +74,6 @@ const App = () => {
       }
     });
   }, []);
-
-  s.getMyDevices(function (err, data) {
-    if (err) console.error(err);
-    else {
-      let activeDevice = data.devices.find((device) => device.is_active);
-      let inactiveDevice = data.devices.find((device) => !device.is_active);
-
-      // sort by type and by active status
-      if (data.devices.length > 0) {
-        if (activeDevice?.is_active) {
-          setDevice(activeDevice.id);
-        } else {
-          setDevice(inactiveDevice.id);
-          s.transferMyPlayback(inactiveDevice);
-        }
-      }
-    }
-  });
 
   const startAlbum = (uri, token) => {
     console.log(uri, token, device, "tok");
@@ -222,6 +222,12 @@ const App = () => {
       ) : (
         // Display the login page
         <>
+          {!currentAlbum && (
+            <div className="header">
+              <h1>{`Sebastian Suarez-Golbornes ${totalAlbums} bästa skivor`}</h1>
+            </div>
+          )}
+
           <SpotifyAuth
             redirectUri={REACT_APP_REDIRECT_URI}
             clientID={REACT_APP_CLIENT_ID}
@@ -235,11 +241,6 @@ const App = () => {
         </>
       )}
 
-      {!currentAlbum && (
-        <div className="header">
-          <h1>{`Sebastian Suarez-Golbornes ${totalAlbums} bästa skivor`}</h1>
-        </div>
-      )}
       <svg width="0" height="0">
         <defs>
           <clipPath id="myCurve" clipPathUnits="objectBoundingBox">
