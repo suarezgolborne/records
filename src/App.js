@@ -1,8 +1,6 @@
 import "./App.scss";
 import { Play, Pause, Dice } from "react-ionicons";
-
 import React, { useEffect, useState } from "react";
-import { SpotifyApiContext } from "react-spotify-api";
 import Cookies from "js-cookie";
 import spotifyApi from "spotify-web-api-js";
 import { SpotifyAuth, Scopes } from "react-spotify-auth";
@@ -18,6 +16,12 @@ const App = () => {
   const [albumChartPosition, setAlbumChartPosition] = useState(null);
   const [device, setDevice] = useState(false);
   const [bgImage, setBgImage] = useState(null);
+
+  const token = Cookies.get("spotifyAuthToken");
+
+  const redirect_uri = "http://localhost:3000";
+  var s = new spotifyApi();
+  s.setAccessToken(token);
 
   const getArtistImage = (data) => {
     s.getArtist(data.items[0].track.artists[0].id, function (err, data) {
@@ -50,13 +54,7 @@ const App = () => {
         );
       }
     });
-  }, []);
-
-  const token = Cookies.get("spotifyAuthToken");
-
-  const redirect_uri = "http://localhost:3000";
-  var s = new spotifyApi();
-  s.setAccessToken(token);
+  }, [s, getArtistImage]);
 
   s.getMyDevices(function (err, data) {
     if (err) console.error(err);
@@ -102,17 +100,7 @@ const App = () => {
     return;
   };
 
-  const pauseAlbum = (uri, token) => {
-    const PlayParameterObject = {
-      context_uri: uri,
-    };
-
-    // s.setAccessToken(token);
-    // const { devices } = s.getMyDevices(token, function (err, data) {
-    //   if (err) console.error(err);
-    //   else console.log("Artist albums", data);
-    // });
-
+  const pauseAlbum = () => {
     s.getMyCurrentPlaybackState(function (err, data) {
       if (err) console.error(err);
       else {
@@ -128,8 +116,6 @@ const App = () => {
         console.log("State", data, data.progress_ms);
       }
     });
-
-    // console.log(devices);
 
     return;
   };
