@@ -54,7 +54,7 @@ const App = () => {
         );
       }
     });
-  }, [s, getArtistImage]);
+  }, []);
 
   s.getMyDevices(function (err, data) {
     if (err) console.error(err);
