@@ -23,6 +23,8 @@ const App = () => {
   const [bgImage, setBgImage] = useState(null);
   const [token, setToken] = useState();
 
+  console.log(REACT_APP_REDIRECT_URI, REACT_APP_CLIENT_ID);
+
   const s = new spotifyApi();
   s.setAccessToken(token);
 
