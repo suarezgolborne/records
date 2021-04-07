@@ -1,6 +1,6 @@
 import "./App.scss";
 import { Play, Pause, Dice } from "react-ionicons";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Cookies from "js-cookie";
 import spotifyApi from "spotify-web-api-js";
 import { SpotifyAuth, Scopes } from "react-spotify-auth";
@@ -28,32 +28,44 @@ const App = () => {
   const s = new spotifyApi();
   s.setAccessToken(token);
 
-  const getArtistImage = (data) => {
-    console.log("getimage");
-    s.getArtist(data.items[0].track.artists[0].id, function (err, data) {
-      if (err) console.error(err);
-      else {
-        setBgImage(data.images[0].url);
-        console.log("gett image", data.images[0].url);
-      }
-    });
-  };
-
   useEffect(() => {
     setToken(Cookies.get("spotifyAuthToken"));
   }, []);
 
+  // const getArtistImage = (data) => {
+  //   console.log("getimage");
+  //   s.getArtist(data.items[0].track.artists[0].id, function (err, data) {
+  //     if (err) console.error(err);
+  //     else {
+  //       setBgImage(data.images[0].url);
+  //       console.log("gett image", data.images[0].url);
+  //     }
+  //   });
+  // };
+
+  // const getArtistImage = useCallback(() => {
+  //   if (currentAlbum) {
+  //     console.log("getimage");
+  //     s.getArtist(currentAlbum.artists[0].id, function (err, data) {
+  //       if (err) console.error(err);
+  //       else {
+  //         setBgImage(data.images[0].url);
+  //         console.log("gett image", data.images[0].url);
+  //       }
+  //     });
+  //   }
+  // }, [currentAlbum]);
+
   useEffect(() => {
+    console.log("useeffect", token);
     if (token) {
-      console.log("useeffect", token);
       s.getMyDevices(function (err, data) {
         if (err) console.error(err);
         else {
           let activeDevice = data.devices.find((device) => device.is_active);
           let inactiveDevice = data.devices.find((device) => !device.is_active);
 
-          //  console.log(inactiveDevice.id, inactiveDevice);
-          // sort by type and by active status
+          // sort by type and by active status?
           if (data.devices.length > 0) {
             if (activeDevice?.is_active) {
               setDevice(activeDevice.id);
@@ -83,7 +95,19 @@ const App = () => {
               else {
                 setCurrentAlbum(data.items[0].track);
                 setAlbumChartPosition(data.offset);
-                getArtistImage(data);
+                // getArtistImage();
+                // s.getArtist(
+                //   data.items[0].track.artists[0].id,
+                //   function (err, data) {
+                //     if (err) console.error(err);
+                //     else {
+                //       setBgImage(data.images[0].url);
+                //       console.log("gett image", data.images[0].url);
+                //     }
+                //   }
+                // );
+
+                console.log("firstsuccess");
               }
             }
           );
@@ -91,6 +115,19 @@ const App = () => {
       });
     }
   }, [token]);
+
+  useEffect(() => {
+    if (currentAlbum) {
+      console.log("getimage");
+      s.getArtist(currentAlbum.artists[0].id, function (err, data) {
+        if (err) console.error(err);
+        else {
+          setBgImage(data.images[0].url);
+          console.log("gett image", data.images[0].url);
+        }
+      });
+    }
+  }, [currentAlbum]);
 
   // useEffect(() => {
   //   s.getPlaylist("5Y1aNHCMgst2Yf7Kog6bOk", function (err, data) {
@@ -178,7 +215,7 @@ const App = () => {
         else {
           setCurrentAlbum(data.items[0].track);
           setAlbumChartPosition(data.offset);
-          getArtistImage(data);
+          // getArtistImage(data);
           setPlaying(false);
           setPosition(0);
           console.log(data);
