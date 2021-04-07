@@ -7,6 +7,7 @@ import { SpotifyAuth, Scopes } from "react-spotify-auth";
 import "react-spotify-auth/dist/index.css";
 import "@fontsource/merriweather-sans/300.css";
 import "@fontsource/merriweather/300.css";
+const { REACT_APP_CLIENT_ID, REACT_APP_REDIRECT_URI } = process.env;
 
 const App = () => {
   const [position, setPosition] = useState(0);
@@ -220,16 +221,18 @@ const App = () => {
         </>
       ) : (
         // Display the login page
-        <SpotifyAuth
-          redirectUri={redirect_uri}
-          clientID="8fcc5bf3662a4b01a488c24d4ddab908"
-          scopes={[
-            Scopes.playlistReadPrivate,
-            Scopes.userModifyPlaybackState,
-            Scopes.userReadCurrentlyPlaying,
-            Scopes.userReadPlaybackState,
-          ]} // either style will work
-        />
+        <>
+          <SpotifyAuth
+            redirectUri={REACT_APP_REDIRECT_URI}
+            clientID={REACT_APP_CLIENT_ID}
+            scopes={[
+              Scopes.playlistReadPrivate,
+              Scopes.userModifyPlaybackState,
+              Scopes.userReadCurrentlyPlaying,
+              Scopes.userReadPlaybackState,
+            ]} // either style will work
+          />
+        </>
       )}
 
       {!currentAlbum && (
