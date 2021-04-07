@@ -19,7 +19,7 @@ const App = () => {
 
   const token = Cookies.get("spotifyAuthToken");
 
-  const redirect_uri = "http://localhost:3000";
+  const redirect_uri = "https://records-4fbw6u5lj-suarezgolborne.vercel.app/";
   var s = new spotifyApi();
   s.setAccessToken(token);
 
