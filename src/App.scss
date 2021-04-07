@@ -2,40 +2,79 @@ body {
   // background: #f0bf82;
   margin: 0 auto;
   background: black;
-  font-family: "merriweather sans";
+  // font-family: "merriweather sans";
+  font-family: "helvetica neue";
+  font-weight: 200;
+  color: #80907c;
 }
 
 h1,
 h2 {
-  color: white;
+  color: #80907c;
   text-align: center;
+  font-family: "helvetica neue";
+  font-weight: 200;
 }
 
 h1 {
-  font-size: 4vh;
+  font-size: calc(2vh * 2vw);
 }
 
 h2 {
   font-size: 2vh;
   text-transform: uppercase;
-  font-family: "merriweather";
+  // font-family: "merriweather";
 }
 
-.header {
-  width: 100%;
-  padding: 1vh 0 4vh;
-  background: #87797424;
-  clip-path: url(#myCurve);
+.headerBlock {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.6;
+  margin-top: 0.5em;
+  position: absolute;
+  left: 1.9em;
+
+  top: 1.4em;
+  text-align: left;
+}
+
+.albumTitleBlock {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.6;
+  margin-top: 0.5em;
+  position: absolute;
+  top: 1.4em;
+  right: 1.9em;
+  width: auto;
+  text-align: right;
+}
+
+.heading {
+  text-transform: uppercase;
+}
+
+.subHeading {
 }
 
 .albumflow {
-  width: 100%;
-  // background: #f0bf82;
-  width: 100%;
-  // background: #f0bf82;
+  // width: 100%;
+  // // background: #f0bf82;
+  // width: 30vw;
+  // // background: #f0bf82;
+  // display: flex;
+  // flex-direction: column;
+  // align-items: center;
+
+  width: calc(30vw - 1em);
   display: flex;
   flex-direction: column;
-  align-items: center;
+  line-height: 1.6;
+  margin-top: 0.5em;
+  position: absolute;
+  top: 1.4em;
+  left: 2em;
+  font-weight: 400;
 
   // background: linear-gradient(to bottom, #f3b167, #ec38bc, #7303c0, #03001e);
   // clip-path: url(#myCurve);
@@ -46,7 +85,8 @@ h2 {
 .controls {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
+  width: 60vw;
 }
 .my-element-to-clip {
   height: 300px;
@@ -72,15 +112,15 @@ button {
   height: 100vh;
   weight: 100vw;
   overflow: hidden;
-  justify-content: flex-end;
+  justify-content: center;
 }
 
 .bg {
   background-size: cover;
 
-  background-position-x: -20vw;
+  background-position-x: calc(-15vh + 20%);
   background-size: 120vw;
-  background-position-y: -10vh;
+  background-position-y: calc(-15vh + 20%);
   background-repeat: no-repeat;
   height: 100vh;
   weight: 100vw;
@@ -95,7 +135,7 @@ button {
 
 .bgtint {
   background-size: cover;
-  background-color: #002750;
+  background-color: #46472ed9;
   opacity: 0.6;
   position: absolute;
   z-index: -1;

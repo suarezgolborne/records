@@ -14,7 +14,8 @@ const App = () => {
   const [position, setPosition] = useState(0);
   const [isPlaying, setPlaying] = useState(false);
   const [currentAlbum, setCurrentAlbum] = useState(null);
-  const [totalAlbums, setTotalAlbums] = useState(null);
+  const [totalAlbums, setTotalAlbums] = useState("");
+  const [albumChartPosition, setAlbumChartPosition] = useState(null);
   const [device, setDevice] = useState(false);
   const [bgImage, setBgImage] = useState(null);
 
@@ -42,6 +43,7 @@ const App = () => {
             if (err) console.error(err);
             else {
               setCurrentAlbum(data.items[0].track);
+              setAlbumChartPosition(data.offset);
               getArtistImage(data);
             }
           }
@@ -143,8 +145,10 @@ const App = () => {
         if (err) console.error(err);
         else {
           setCurrentAlbum(data.items[0].track);
+          setAlbumChartPosition(data.offset);
           getArtistImage(data);
           setPlaying(false);
+          console.log(data);
         }
       }
     );
@@ -159,25 +163,7 @@ const App = () => {
             style={{ backgroundImage: `url(${bgImage})` }}
           ></div>
           <div className="bgtint"></div>
-          <div className="albumflow">
-            <h2>
-              {currentAlbum
-                ? `${currentAlbum?.artists[0].name} - ${
-                    currentAlbum?.album.name
-                  } (${new Date(
-                    currentAlbum?.album.release_date
-                  ).getFullYear()})`
-                : null}
-            </h2>
-            <div>
-              <img
-                className="cover"
-                src={currentAlbum?.album.images[0].url}
-                width={currentAlbum?.album.images[0].width}
-                alt=""
-              />
-            </div>
-          </div>
+
           <div className="controls">
             {isPlaying ? (
               <button
@@ -206,7 +192,14 @@ const App = () => {
                 />
               </button>
             )}
-
+            <div>
+              <img
+                className="cover"
+                src={currentAlbum?.album.images[0].url}
+                width={currentAlbum?.album.images[0].width}
+                alt=""
+              />
+            </div>
             <button
               onClick={() =>
                 shuffleAlbum(currentAlbum?.album.external_urls.spotify, token)
@@ -219,9 +212,25 @@ const App = () => {
                 width="50px"
               />
             </button>
-
-            <a href={currentAlbum?.album.external_urls.spotify}></a>
           </div>
+
+          <div className="headerBlock">
+            <span className="heading">{`Världens ${totalAlbums} bästa skivor`}</span>
+            <span className="subHeading">
+              {albumChartPosition && `Nummer ${albumChartPosition}`}
+            </span>
+          </div>
+
+          {currentAlbum && (
+            <div className="albumTitleBlock">
+              <span className="heading">{currentAlbum?.artists[0].name}</span>
+              <span className="subHeading">{`${
+                currentAlbum?.album.name
+              } (${new Date(
+                currentAlbum?.album.release_date
+              ).getFullYear()})`}</span>
+            </div>
+          )}
         </>
       ) : (
         // Display the login page
@@ -237,9 +246,11 @@ const App = () => {
         />
       )}
 
-      <div className="header">
-        <h1>{`Sebastian Suarez-Golbornes ${totalAlbums} bästa skivor`}</h1>
-      </div>
+      {!currentAlbum && (
+        <div className="header">
+          <h1>{`Sebastian Suarez-Golbornes ${totalAlbums} bästa skivor`}</h1>
+        </div>
+      )}
       <svg width="0" height="0">
         <defs>
           <clipPath id="myCurve" clipPathUnits="objectBoundingBox">
