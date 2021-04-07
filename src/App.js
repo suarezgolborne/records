@@ -52,14 +52,15 @@ const App = () => {
           let activeDevice = data.devices.find((device) => device.is_active);
           let inactiveDevice = data.devices.find((device) => !device.is_active);
 
-          console.log(inactiveDevice.id, inactiveDevice);
+          //  console.log(inactiveDevice.id, inactiveDevice);
           // sort by type and by active status
           if (data.devices.length > 0) {
             if (activeDevice?.is_active) {
               setDevice(activeDevice.id);
+              s.transferMyPlayback([activeDevice.id]);
             } else {
               setDevice(inactiveDevice.id);
-              s.transferMyPlayback(JSON.parse(inactiveDevice.id));
+              s.transferMyPlayback([inactiveDevice.id]);
             }
           }
         }
@@ -117,11 +118,11 @@ const App = () => {
   //   });
   // }, [token]);
 
-  const startAlbum = (uri) => {
+  const startAlbum = (position, device, currentAlbum) => {
     console.log("startalbum");
 
     const PlayParameterObject = {
-      context_uri: uri,
+      context_uri: currentAlbum?.album.external_urls.spotify,
       position_ms: position,
       device_id: device,
     };
@@ -164,7 +165,7 @@ const App = () => {
     return;
   };
 
-  const shuffleAlbum = () => {
+  const shuffleAlbum = (totalAlbums) => {
     console.log("shuffle");
     s.getPlaylistTracks(
       "5Y1aNHCMgst2Yf7Kog6bOk",
@@ -179,6 +180,7 @@ const App = () => {
           setAlbumChartPosition(data.offset);
           getArtistImage(data);
           setPlaying(false);
+          setPosition(0);
           console.log(data);
         }
       }
@@ -197,11 +199,7 @@ const App = () => {
 
           <div className="controls">
             {isPlaying ? (
-              <button
-                onClick={() =>
-                  pauseAlbum(currentAlbum?.album.external_urls.spotify)
-                }
-              >
+              <button onClick={() => pauseAlbum()}>
                 <Pause
                   color={"#ffffff"}
                   title={"Pausa"}
@@ -211,9 +209,7 @@ const App = () => {
               </button>
             ) : (
               <button
-                onClick={() =>
-                  startAlbum(currentAlbum?.album.external_urls.spotify)
-                }
+                onClick={() => startAlbum(position, device, currentAlbum)}
               >
                 <Play
                   color={"#ffffff"}
@@ -231,11 +227,7 @@ const App = () => {
                 alt=""
               />
             </div>
-            <button
-              onClick={() =>
-                shuffleAlbum(currentAlbum?.album.external_urls.spotify)
-              }
-            >
+            <button onClick={() => shuffleAlbum(totalAlbums)}>
               <Dice
                 color={"#ffffff"}
                 title={"Shuffle album"}
