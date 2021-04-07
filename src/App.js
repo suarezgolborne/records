@@ -82,7 +82,7 @@ const App = () => {
         );
       }
     });
-  }, [currentAlbum]);
+  }, []);
 
   const startAlbum = (uri, token) => {
     console.log("startalbum");
