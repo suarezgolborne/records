@@ -34,7 +34,7 @@ const App = () => {
       if (err) console.error(err);
       else {
         setBgImage(data.images[0].url);
-        console.log(data.images[0].url);
+        console.log("gett image", data.images[0].url);
       }
     });
   };
@@ -82,7 +82,7 @@ const App = () => {
         );
       }
     });
-  }, []);
+  }, [currentAlbum]);
 
   const startAlbum = (uri, token) => {
     console.log("startalbum");

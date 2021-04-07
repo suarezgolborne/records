@@ -32,10 +32,16 @@ h2 {
   line-height: 1.6;
   margin-top: 0.5em;
   position: absolute;
-  left: 1.9em;
 
   top: 1.4em;
-  text-align: left;
+
+  text-align: center;
+
+  @media (min-width: 670px) {
+    text-align: left;
+    top: 1.4em;
+    left: 1.9em;
+  }
 }
 
 .albumTitleBlock {
@@ -44,10 +50,15 @@ h2 {
   line-height: 1.6;
   margin-top: 0.5em;
   position: absolute;
-  top: 1.4em;
-  right: 1.9em;
   width: auto;
-  text-align: right;
+  bottom: 2.4em;
+  text-align: center;
+
+  @media (min-width: 670px) {
+    text-align: right;
+    top: 1.4em;
+    right: 1.9em;
+  }
 }
 
 .heading {
@@ -117,13 +128,9 @@ button {
 
 .bg {
   background-size: cover;
+  background-position: 50% 0;
 
-  background-position-x: calc(-15vh + 20%);
-  background-size: 120vw;
-  background-position-y: calc(-15vh + 20%);
   background-repeat: no-repeat;
-  height: 100vh;
-  weight: 100vw;
   overflow: hidden;
 
   position: absolute;
@@ -131,6 +138,12 @@ button {
   height: 100%;
   z-index: -1;
   filter: grayscale(1) brightness(0.3);
+
+  @media (min-width: 920px) {
+    background-position-x: calc(-15vh + 20%);
+    background-size: 120vw;
+    background-position-y: calc(-5vh + 20%);
+  }
 }
 
 .bgtint {
