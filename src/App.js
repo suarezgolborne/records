@@ -7,6 +7,10 @@ import { SpotifyAuth, Scopes } from "react-spotify-auth";
 import "react-spotify-auth/dist/index.css";
 import "@fontsource/merriweather-sans/300.css";
 import "@fontsource/merriweather/300.css";
+import dotenv from "dotenv";
+
+dotenv.config();
+
 const { REACT_APP_CLIENT_ID, REACT_APP_REDIRECT_URI } = process.env;
 
 const App = () => {
@@ -25,6 +29,7 @@ const App = () => {
   s.setAccessToken(token);
 
   const getArtistImage = (data) => {
+    console.log("getimage");
     s.getArtist(data.items[0].track.artists[0].id, function (err, data) {
       if (err) console.error(err);
       else {
@@ -33,7 +38,9 @@ const App = () => {
       }
     });
   };
+
   useEffect(() => {
+    console.log("useeffect");
     s.getMyDevices(function (err, data) {
       if (err) console.error(err);
       else {
@@ -53,6 +60,8 @@ const App = () => {
     });
 
     s.getPlaylist("5Y1aNHCMgst2Yf7Kog6bOk", function (err, data) {
+      console.log("getplaylist");
+
       if (err) console.error(err);
       else {
         setTotalAlbums(data.tracks.total);
@@ -76,7 +85,7 @@ const App = () => {
   }, []);
 
   const startAlbum = (uri, token) => {
-    console.log(uri, token, device, "tok");
+    console.log("startalbum");
 
     const PlayParameterObject = {
       context_uri: uri,
@@ -84,14 +93,12 @@ const App = () => {
       device_id: device,
     };
 
-    console.log(position);
-
     if (device) {
       s.play(PlayParameterObject, function (err, data) {
         if (err) console.error(err);
         else {
           setPlaying(true);
-          console.log("State", data, data.progress_ms);
+          console.log("start album is device", data, data.progress_ms);
         }
       });
     } else {
@@ -102,7 +109,10 @@ const App = () => {
   };
 
   const pauseAlbum = () => {
+    console.log("pause");
+
     s.getMyCurrentPlaybackState(function (err, data) {
+      console.log("get playback state");
       if (err) console.error(err);
       else {
         setPosition(data.progress_ms);
@@ -122,6 +132,7 @@ const App = () => {
   };
 
   const shuffleAlbum = () => {
+    console.log("shuffle");
     s.getPlaylistTracks(
       "5Y1aNHCMgst2Yf7Kog6bOk",
       {
