@@ -151,52 +151,52 @@ const App = () => {
   //   });
   // }, [token]);
 
-  // const startAlbum = (position, device, currentAlbum) => {
-  //   console.log("startalbum");
+  const startAlbum = (position, device, currentAlbum) => {
+    console.log("startalbum");
 
-  //   const PlayParameterObject = {
-  //     context_uri: currentAlbum?.album.external_urls.spotify,
-  //     position_ms: position,
-  //     device_id: device,
-  //   };
+    const PlayParameterObject = {
+      context_uri: currentAlbum?.album.external_urls.spotify,
+      position_ms: position,
+      device_id: device,
+    };
 
-  //   if (device) {
-  //     s.play(PlayParameterObject, function (err, data) {
-  //       if (err) console.error(err);
-  //       else {
-  //         setPlaying(true);
-  //         console.log("start album is device", data, data.progress_ms);
-  //       }
-  //     });
-  //   } else {
-  //     window.open(currentAlbum?.album.external_urls.spotify, "name");
-  //   }
+    if (device) {
+      s.play(PlayParameterObject, function (err, data) {
+        if (err) console.error(err);
+        else {
+          setPlaying(true);
+          console.log("start album is device", data, data.progress_ms);
+        }
+      });
+    } else {
+      window.open(currentAlbum?.album.external_urls.spotify, "name");
+    }
 
-  //   return;
-  // };
+    return;
+  };
 
-  // const pauseAlbum = () => {
-  //   console.log("pause");
+  const pauseAlbum = () => {
+    console.log("pause");
 
-  //   s.getMyCurrentPlaybackState(function (err, data) {
-  //     console.log("get playback state");
-  //     if (err) console.error(err);
-  //     else {
-  //       setPosition(data.progress_ms);
-  //       console.log("State", data, data.progress_ms);
-  //     }
-  //   });
+    s.getMyCurrentPlaybackState(function (err, data) {
+      console.log("get playback state");
+      if (err) console.error(err);
+      else {
+        setPosition(data.progress_ms);
+        console.log("State", data, data.progress_ms);
+      }
+    });
 
-  //   s.pause(function (err, data) {
-  //     if (err) console.error(err);
-  //     else {
-  //       setPlaying(false);
-  //       console.log("State", data, data.progress_ms);
-  //     }
-  //   });
+    s.pause(function (err, data) {
+      if (err) console.error(err);
+      else {
+        setPlaying(false);
+        console.log("State", data, data.progress_ms);
+      }
+    });
 
-  //   return;
-  // };
+    return;
+  };
 
   // const shuffleAlbum = (totalAlbums) => {
   //   console.log("shuffle");
@@ -230,7 +230,7 @@ const App = () => {
           ></div>
           <div className="bgtint"></div>
 
-          {/* <div className="controls">
+          <div className="controls">
             {isPlaying ? (
               <button onClick={() => pauseAlbum()}>
                 <Pause
@@ -260,15 +260,15 @@ const App = () => {
                 alt=""
               />
             </div>
-            <button onClick={() => shuffleAlbum(totalAlbums)}>
+            {/* <button onClick={() => shuffleAlbum(totalAlbums)}>
               <Dice
                 color={"#ffffff"}
                 title={"Shuffle album"}
                 height="50px"
                 width="50px"
               />
-            </button>
-          </div> */}
+            </button> */}
+          </div>
 
           <div className="headerBlock">
             <span className="heading">{`Världens ${totalAlbums} bästa skivor`}</span>
