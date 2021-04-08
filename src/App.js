@@ -263,7 +263,7 @@ const App = () => {
             <button onClick={() => shuffleAlbum(totalAlbums)}>
               <Dice
                 color={"#ffffff"}
-                title={"Shuffle album"}
+                title={"Slumpa ett nytt album"}
                 height="50px"
                 width="50px"
               />
