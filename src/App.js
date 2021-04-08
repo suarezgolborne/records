@@ -53,67 +53,67 @@ const App = () => {
 
   useEffect(() => {
     console.log("useeffect", typeof token, token);
-    if (token) {
-      s.getMyDevices(function (err, data) {
-        if (err) console.error(err);
-        else {
-          let activeDevice = data.devices.find((device) => device.is_active);
-          let inactiveDevice = data.devices.find((device) => !device.is_active);
 
-          // sort by type and by active status?
-          if (data.devices.length > 0) {
-            if (activeDevice?.is_active) {
-              setDevice(activeDevice.id);
-              s.transferMyPlayback([activeDevice.id]);
-            } else {
-              setDevice(inactiveDevice.id);
-              s.transferMyPlayback([inactiveDevice.id]);
-            }
+    console.log("useeffect if", typeof token, token);
+    s.getMyDevices(function (err, data) {
+      if (err) console.error(err);
+      else {
+        let activeDevice = data.devices.find((device) => device.is_active);
+        let inactiveDevice = data.devices.find((device) => !device.is_active);
+
+        // sort by type and by active status?
+        if (data.devices.length > 0) {
+          if (activeDevice?.is_active) {
+            setDevice(activeDevice.id);
+            s.transferMyPlayback([activeDevice.id]);
+          } else {
+            setDevice(inactiveDevice.id);
+            s.transferMyPlayback([inactiveDevice.id]);
           }
         }
-      });
+      }
+    });
 
-      s.getPlaylist("5Y1aNHCMgst2Yf7Kog6bOk", function (err, data) {
-        console.log("getplaylist");
+    s.getPlaylist("5Y1aNHCMgst2Yf7Kog6bOk", function (err, data) {
+      console.log("getplaylist");
 
-        if (err) console.error(err);
-        else {
-          setTotalAlbums(data.tracks.total);
-          s.getPlaylistTracks(
-            "5Y1aNHCMgst2Yf7Kog6bOk",
-            {
-              limit: 1,
-              offset: Math.floor(Math.random() * data.tracks.total),
-            },
-            function (err, data) {
-              if (err) console.error(err);
-              else {
-                setCurrentAlbum(data.items[0].track);
-                setAlbumChartPosition(data.offset);
-                // getArtistImage();
-                // s.getArtist(
-                //   data.items[0].track.artists[0].id,
-                //   function (err, data) {
-                //     if (err) console.error(err);
-                //     else {
-                //       setBgImage(data.images[0].url);
-                //       console.log("gett image", data.images[0].url);
-                //     }
-                //   }
-                // );
+      if (err) console.error(err);
+      else {
+        setTotalAlbums(data.tracks.total);
+        s.getPlaylistTracks(
+          "5Y1aNHCMgst2Yf7Kog6bOk",
+          {
+            limit: 1,
+            offset: Math.floor(Math.random() * data.tracks.total),
+          },
+          function (err, data) {
+            if (err) console.error(err);
+            else {
+              setCurrentAlbum(data.items[0].track);
+              setAlbumChartPosition(data.offset);
+              // getArtistImage();
+              // s.getArtist(
+              //   data.items[0].track.artists[0].id,
+              //   function (err, data) {
+              //     if (err) console.error(err);
+              //     else {
+              //       setBgImage(data.images[0].url);
+              //       console.log("gett image", data.images[0].url);
+              //     }
+              //   }
+              // );
 
-                console.log("firstsuccess");
-              }
+              console.log("firstsuccess");
             }
-          );
-        }
-      });
-    }
+          }
+        );
+      }
+    });
   }, [token]);
 
   useEffect(() => {
     if (currentAlbum) {
-      console.log("getimage");
+      console.log("getimage", albumChartPosition, token);
       s.getArtist(currentAlbum.artists[0].id, function (err, data) {
         if (err) console.error(err);
         else {
