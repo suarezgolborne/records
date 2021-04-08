@@ -1,6 +1,6 @@
 import "./App.scss";
 import { Play, Pause, Dice } from "react-ionicons";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import spotifyApi from "spotify-web-api-js";
 import { SpotifyAuth, Scopes } from "react-spotify-auth";
@@ -22,8 +22,6 @@ const App = () => {
   const [device, setDevice] = useState();
   const [bgImage, setBgImage] = useState(null);
   const [token, setToken] = useState();
-
-  console.log(REACT_APP_REDIRECT_URI, REACT_APP_CLIENT_ID);
 
   const s = new spotifyApi();
   s.setAccessToken(token);
@@ -57,9 +55,11 @@ const App = () => {
   // }, [currentAlbum]);
 
   useEffect(() => {
-    console.log("useeffect", token);
+    console.log("useeffect", typeof token, token);
     if (token) {
-      s.getMyDevices(function (err, data) {
+      const a = new spotifyApi();
+
+      a.getMyDevices(function (err, data) {
         if (err) console.error(err);
         else {
           let activeDevice = data.devices.find((device) => device.is_active);
@@ -69,22 +69,22 @@ const App = () => {
           if (data.devices.length > 0) {
             if (activeDevice?.is_active) {
               setDevice(activeDevice.id);
-              s.transferMyPlayback([activeDevice.id]);
+              a.transferMyPlayback([activeDevice.id]);
             } else {
               setDevice(inactiveDevice.id);
-              s.transferMyPlayback([inactiveDevice.id]);
+              a.transferMyPlayback([inactiveDevice.id]);
             }
           }
         }
       });
 
-      s.getPlaylist("5Y1aNHCMgst2Yf7Kog6bOk", function (err, data) {
+      a.getPlaylist("5Y1aNHCMgst2Yf7Kog6bOk", function (err, data) {
         console.log("getplaylist");
 
         if (err) console.error(err);
         else {
           setTotalAlbums(data.tracks.total);
-          s.getPlaylistTracks(
+          a.getPlaylistTracks(
             "5Y1aNHCMgst2Yf7Kog6bOk",
             {
               limit: 1,
