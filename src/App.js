@@ -150,74 +150,74 @@ const App = () => {
   //   });
   // }, [token]);
 
-  const startAlbum = (position, device, currentAlbum) => {
-    console.log("startalbum");
+  // const startAlbum = (position, device, currentAlbum) => {
+  //   console.log("startalbum");
 
-    const PlayParameterObject = {
-      context_uri: currentAlbum?.album.external_urls.spotify,
-      position_ms: position,
-      device_id: device,
-    };
+  //   const PlayParameterObject = {
+  //     context_uri: currentAlbum?.album.external_urls.spotify,
+  //     position_ms: position,
+  //     device_id: device,
+  //   };
 
-    if (device) {
-      s.play(PlayParameterObject, function (err, data) {
-        if (err) console.error(err);
-        else {
-          setPlaying(true);
-          console.log("start album is device", data, data.progress_ms);
-        }
-      });
-    } else {
-      window.open(currentAlbum?.album.external_urls.spotify, "name");
-    }
+  //   if (device) {
+  //     s.play(PlayParameterObject, function (err, data) {
+  //       if (err) console.error(err);
+  //       else {
+  //         setPlaying(true);
+  //         console.log("start album is device", data, data.progress_ms);
+  //       }
+  //     });
+  //   } else {
+  //     window.open(currentAlbum?.album.external_urls.spotify, "name");
+  //   }
 
-    return;
-  };
+  //   return;
+  // };
 
-  const pauseAlbum = () => {
-    console.log("pause");
+  // const pauseAlbum = () => {
+  //   console.log("pause");
 
-    s.getMyCurrentPlaybackState(function (err, data) {
-      console.log("get playback state");
-      if (err) console.error(err);
-      else {
-        setPosition(data.progress_ms);
-        console.log("State", data, data.progress_ms);
-      }
-    });
+  //   s.getMyCurrentPlaybackState(function (err, data) {
+  //     console.log("get playback state");
+  //     if (err) console.error(err);
+  //     else {
+  //       setPosition(data.progress_ms);
+  //       console.log("State", data, data.progress_ms);
+  //     }
+  //   });
 
-    s.pause(function (err, data) {
-      if (err) console.error(err);
-      else {
-        setPlaying(false);
-        console.log("State", data, data.progress_ms);
-      }
-    });
+  //   s.pause(function (err, data) {
+  //     if (err) console.error(err);
+  //     else {
+  //       setPlaying(false);
+  //       console.log("State", data, data.progress_ms);
+  //     }
+  //   });
 
-    return;
-  };
+  //   return;
+  // };
 
-  const shuffleAlbum = (totalAlbums) => {
-    console.log("shuffle");
-    s.getPlaylistTracks(
-      "5Y1aNHCMgst2Yf7Kog6bOk",
-      {
-        limit: 1,
-        offset: Math.floor(Math.random() * totalAlbums),
-      },
-      function (err, data) {
-        if (err) console.error(err);
-        else {
-          setCurrentAlbum(data.items[0].track);
-          setAlbumChartPosition(data.offset);
-          // getArtistImage(data);
-          setPlaying(false);
-          setPosition(0);
-          console.log(data);
-        }
-      }
-    );
-  };
+  // const shuffleAlbum = (totalAlbums) => {
+  //   console.log("shuffle");
+  //   s.getPlaylistTracks(
+  //     "5Y1aNHCMgst2Yf7Kog6bOk",
+  //     {
+  //       limit: 1,
+  //       offset: Math.floor(Math.random() * totalAlbums),
+  //     },
+  //     function (err, data) {
+  //       if (err) console.error(err);
+  //       else {
+  //         setCurrentAlbum(data.items[0].track);
+  //         setAlbumChartPosition(data.offset);
+  //         // getArtistImage(data);
+  //         setPlaying(false);
+  //         setPosition(0);
+  //         console.log(data);
+  //       }
+  //     }
+  //   );
+  // };
 
   return (
     <div className="app">
@@ -229,7 +229,7 @@ const App = () => {
           ></div>
           <div className="bgtint"></div>
 
-          <div className="controls">
+          {/* <div className="controls">
             {isPlaying ? (
               <button onClick={() => pauseAlbum()}>
                 <Pause
@@ -267,7 +267,7 @@ const App = () => {
                 width="50px"
               />
             </button>
-          </div>
+          </div> */}
 
           <div className="headerBlock">
             <span className="heading">{`Världens ${totalAlbums} bästa skivor`}</span>
