@@ -7,9 +7,6 @@ import { SpotifyAuth, Scopes } from "react-spotify-auth";
 import "react-spotify-auth/dist/index.css";
 import "@fontsource/merriweather-sans/300.css";
 import "@fontsource/merriweather/300.css";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 const { REACT_APP_CLIENT_ID, REACT_APP_REDIRECT_URI } = process.env;
 
@@ -57,9 +54,7 @@ const App = () => {
   useEffect(() => {
     console.log("useeffect", typeof token, token);
     if (token) {
-      const a = new spotifyApi();
-
-      a.getMyDevices(function (err, data) {
+      s.getMyDevices(function (err, data) {
         if (err) console.error(err);
         else {
           let activeDevice = data.devices.find((device) => device.is_active);
@@ -69,22 +64,22 @@ const App = () => {
           if (data.devices.length > 0) {
             if (activeDevice?.is_active) {
               setDevice(activeDevice.id);
-              a.transferMyPlayback([activeDevice.id]);
+              s.transferMyPlayback([activeDevice.id]);
             } else {
               setDevice(inactiveDevice.id);
-              a.transferMyPlayback([inactiveDevice.id]);
+              s.transferMyPlayback([inactiveDevice.id]);
             }
           }
         }
       });
 
-      a.getPlaylist("5Y1aNHCMgst2Yf7Kog6bOk", function (err, data) {
+      s.getPlaylist("5Y1aNHCMgst2Yf7Kog6bOk", function (err, data) {
         console.log("getplaylist");
 
         if (err) console.error(err);
         else {
           setTotalAlbums(data.tracks.total);
-          a.getPlaylistTracks(
+          s.getPlaylistTracks(
             "5Y1aNHCMgst2Yf7Kog6bOk",
             {
               limit: 1,
@@ -127,7 +122,7 @@ const App = () => {
         }
       });
     }
-  }, [currentAlbum]);
+  }, [albumChartPosition]);
 
   // useEffect(() => {
   //   s.getPlaylist("5Y1aNHCMgst2Yf7Kog6bOk", function (err, data) {
@@ -314,21 +309,6 @@ const App = () => {
           />
         </>
       )}
-
-      <svg width="0" height="0">
-        <defs>
-          <clipPath id="myCurve" clipPathUnits="objectBoundingBox">
-            <path
-              d="M 0,1
-									L 0,0
-									L 1,0
-									L 1,1
-									C .65 .8, .35 .8, 0 1
-									Z"
-            />
-          </clipPath>
-        </defs>
-      </svg>
     </div>
   );
 };
