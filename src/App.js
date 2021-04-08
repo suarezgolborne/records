@@ -198,27 +198,27 @@ const App = () => {
     return;
   };
 
-  // const shuffleAlbum = (totalAlbums) => {
-  //   console.log("shuffle");
-  //   s.getPlaylistTracks(
-  //     "5Y1aNHCMgst2Yf7Kog6bOk",
-  //     {
-  //       limit: 1,
-  //       offset: Math.floor(Math.random() * totalAlbums),
-  //     },
-  //     function (err, data) {
-  //       if (err) console.error(err);
-  //       else {
-  //         setCurrentAlbum(data.items[0].track);
-  //         setAlbumChartPosition(data.offset);
-  //         // getArtistImage(data);
-  //         setPlaying(false);
-  //         setPosition(0);
-  //         console.log(data);
-  //       }
-  //     }
-  //   );
-  // };
+  const shuffleAlbum = (totalAlbums) => {
+    console.log("shuffle");
+    s.getPlaylistTracks(
+      "5Y1aNHCMgst2Yf7Kog6bOk",
+      {
+        limit: 1,
+        offset: Math.floor(Math.random() * totalAlbums),
+      },
+      function (err, data) {
+        if (err) console.error(err);
+        else {
+          setCurrentAlbum(data.items[0].track);
+          setAlbumChartPosition(data.offset);
+          // getArtistImage(data);
+          setPlaying(false);
+          setPosition(0);
+          console.log(data);
+        }
+      }
+    );
+  };
 
   return (
     <div className="app">
@@ -260,14 +260,14 @@ const App = () => {
                 alt=""
               />
             </div>
-            {/* <button onClick={() => shuffleAlbum(totalAlbums)}>
+            <button onClick={() => shuffleAlbum(totalAlbums)}>
               <Dice
                 color={"#ffffff"}
                 title={"Shuffle album"}
                 height="50px"
                 width="50px"
               />
-            </button> */}
+            </button>
           </div>
 
           <div className="headerBlock">
