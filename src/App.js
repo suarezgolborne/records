@@ -27,6 +27,7 @@ const App = () => {
     setToken(Cookies.get("spotifyAuthToken"));
   }, []);
 
+  //
   // const getArtistImage = (data) => {
   //   console.log("getimage");
   //   s.getArtist(data.items[0].track.artists[0].id, function (err, data) {
