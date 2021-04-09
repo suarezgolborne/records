@@ -8,6 +8,7 @@ import "react-spotify-auth/dist/index.css";
 import "@fontsource/merriweather-sans/300.css";
 import "@fontsource/merriweather/300.css";
 import { getAverageColor } from "fast-average-color-node";
+import { BgTint, BgImage } from "./App.styled";
 
 const { REACT_APP_CLIENT_ID, REACT_APP_REDIRECT_URI } = process.env;
 
@@ -93,9 +94,7 @@ const App = () => {
       }
     }
 
-    let result;
     toDataURL(currentAlbum?.album.images[0].url, function (dataUrl) {
-      // console.log("RESULT:", getAverageColor(dataUrl), bgColor);
       getAverageColor(dataUrl).then((color) => {
         setBgColor(color.value);
       });
@@ -176,19 +175,8 @@ const App = () => {
     <div className="app">
       {token ? (
         <>
-          <div
-            className="bg"
-            style={{ backgroundImage: `url(${bgImage})` }}
-          ></div>
-          <div
-            className="bgtint"
-            style={
-              bgColor && {
-                backgroundColor: `rgba(${bgColor[0]},${bgColor[1]},${bgColor[2]},0.5)`,
-              }
-            }
-          ></div>
-
+          <BgImage BgImage={bgImage} />
+          <BgTint bgColor={bgColor} />
           <div className="controls">
             {isPlaying ? (
               <button onClick={() => pauseAlbum()}>

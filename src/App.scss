@@ -34,14 +34,13 @@ h2 {
   margin-top: 0.5em;
   position: absolute;
 
-  top: 1.4em;
+  top: 22px;
 
   text-align: center;
 
   @media (min-width: 670px) {
     text-align: left;
-    top: 1.4em;
-    left: 1.9em;
+    left: 34px;
   }
 }
 
@@ -58,8 +57,8 @@ h2 {
 
   @media (min-width: 670px) {
     text-align: right;
-    top: 1.4em;
-    right: 1.9em;
+    top: 22px;
+    right: 34px;
     bottom: unset;
   }
 }
@@ -109,7 +108,7 @@ h2 {
 }
 
 .cover {
-  width: 40vw;
+  width: 37vw;
 }
 
 button {
@@ -132,7 +131,7 @@ button {
 .bg {
   background-size: cover;
   background-position: 50% 0;
-
+  background-position: center;
   background-repeat: no-repeat;
   overflow: hidden;
 
