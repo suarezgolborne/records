@@ -49,7 +49,6 @@ background-size: cover;
 export const CoverImage = styled.img`
   animation: ${animationMixin};
   width: 37vw;
-  opacity: 1;
 `;
 
 export const BgTint = styled.div`
