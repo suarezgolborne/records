@@ -7,6 +7,7 @@ import { SpotifyAuth, Scopes } from "react-spotify-auth";
 import "react-spotify-auth/dist/index.css";
 import "@fontsource/merriweather-sans/300.css";
 import "@fontsource/merriweather/300.css";
+import { getAverageColor } from "fast-average-color-node";
 
 const { REACT_APP_CLIENT_ID, REACT_APP_REDIRECT_URI } = process.env;
 
@@ -18,6 +19,7 @@ const App = () => {
   const [albumChartPosition, setAlbumChartPosition] = useState(null);
   const [device, setDevice] = useState();
   const [bgImage, setBgImage] = useState(null);
+  const [bgColor, setBgColor] = useState(null);
   const [token, setToken] = useState();
 
   const s = new spotifyApi();
@@ -111,6 +113,38 @@ const App = () => {
       }
     });
   }, [token]);
+
+  useEffect(() => {
+    function toDataURL(src, callback, outputFormat) {
+      var img = new Image();
+      img.crossOrigin = "Anonymous";
+      img.onload = function () {
+        var canvas = document.createElement("CANVAS");
+        var ctx = canvas.getContext("2d");
+        var dataURL;
+        canvas.height = this.naturalHeight;
+        canvas.width = this.naturalWidth;
+        ctx.drawImage(this, 0, 0);
+        dataURL = canvas.toDataURL(outputFormat);
+        callback(dataURL);
+      };
+      img.src = src;
+      if (img.complete || img.complete === undefined) {
+        img.src =
+          "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
+        img.src = src;
+      }
+    }
+
+    let result;
+    toDataURL(currentAlbum?.album.images[0].url, function (dataUrl) {
+      // console.log("RESULT:", getAverageColor(dataUrl), bgColor);
+      getAverageColor(dataUrl).then((color) => {
+        setBgColor(color.value);
+        console.log(color);
+      });
+    });
+  }, [albumChartPosition]);
 
   useEffect(() => {
     if (currentAlbum) {
@@ -228,7 +262,16 @@ const App = () => {
             className="bg"
             style={{ backgroundImage: `url(${bgImage})` }}
           ></div>
-          <div className="bgtint"></div>
+          <div
+            className="bgtint"
+            style={
+              bgColor && {
+                backgroundColor: `rgba(${bgColor[0] - 40},${bgColor[1] - 40},${
+                  bgColor[2] - 40
+                },0.5)`,
+              }
+            }
+          ></div>
 
           <div className="controls">
             {isPlaying ? (
@@ -269,6 +312,24 @@ const App = () => {
               />
             </button>
           </div>
+
+          {/* style={{
+              color: `rgb(${
+                Math.floor(bgColor[0] * 1.2) > 200
+                  ? Math.floor(bgColor[0] * 1.2)
+                  : 200
+              },
+              ${
+                Math.floor(bgColor[1] * 1.2) > 200
+                  ? Math.floor(bgColor[1] * 1.2)
+                  : 200
+              },
+              ${
+                Math.floor(bgColor[2] * 1.2) > 200
+                  ? Math.floor(bgColor[2] * 1.2)
+                  : 200
+              })`,
+            }} */}
 
           <div className="headerBlock">
             <span className="heading">{`Världens ${totalAlbums} bästa skivor`}</span>
