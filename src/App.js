@@ -8,7 +8,7 @@ import "react-spotify-auth/dist/index.css";
 import "@fontsource/merriweather-sans/300.css";
 import "@fontsource/merriweather/300.css";
 import { getAverageColor } from "fast-average-color-node";
-import { BgTint, BgImage } from "./App.styled";
+import { BgTint, BgImage, BgContainer, CoverImage } from "./App.styled";
 
 const { REACT_APP_CLIENT_ID, REACT_APP_REDIRECT_URI } = process.env;
 
@@ -22,6 +22,7 @@ const App = () => {
   const [bgImage, setBgImage] = useState(null);
   const [bgColor, setBgColor] = useState(null);
   const [token, setToken] = useState();
+  const [updating, setUpdating] = useState(false);
 
   const s = new spotifyApi();
   s.setAccessToken(token);
@@ -98,6 +99,7 @@ const App = () => {
       getAverageColor(dataUrl).then((color) => {
         setBgColor(color.value);
       });
+      setUpdating(false);
     });
   }, [albumChartPosition]);
 
@@ -152,6 +154,8 @@ const App = () => {
   };
 
   const shuffleAlbum = (totalAlbums) => {
+    setUpdating(true);
+
     s.getPlaylistTracks(
       "5Y1aNHCMgst2Yf7Kog6bOk",
       {
@@ -175,8 +179,12 @@ const App = () => {
     <div className="app">
       {token ? (
         <>
-          <BgImage BgImage={bgImage} />
-          <BgTint bgColor={bgColor} />
+          {bgColor && (
+            <BgContainer updating={updating}>
+              <BgImage BgImage={bgImage} />
+              <BgTint bgColor={bgColor} />
+            </BgContainer>
+          )}
           <div className="controls">
             {isPlaying ? (
               <button onClick={() => pauseAlbum()}>
@@ -200,11 +208,10 @@ const App = () => {
               </button>
             )}
             <div>
-              <img
-                className="cover"
+              <CoverImage
                 src={currentAlbum?.album.images[0].url}
                 width={currentAlbum?.album.images[0].width}
-                alt=""
+                updating={updating}
               />
             </div>
             <button onClick={() => shuffleAlbum(totalAlbums)}>
