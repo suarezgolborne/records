@@ -29,35 +29,7 @@ const App = () => {
     setToken(Cookies.get("spotifyAuthToken"));
   }, []);
 
-  //
-  // const getArtistImage = (data) => {
-  //   console.log("getimage");
-  //   s.getArtist(data.items[0].track.artists[0].id, function (err, data) {
-  //     if (err) console.error(err);
-  //     else {
-  //       setBgImage(data.images[0].url);
-  //       console.log("gett image", data.images[0].url);
-  //     }
-  //   });
-  // };
-
-  // const getArtistImage = useCallback(() => {
-  //   if (currentAlbum) {
-  //     console.log("getimage");
-  //     s.getArtist(currentAlbum.artists[0].id, function (err, data) {
-  //       if (err) console.error(err);
-  //       else {
-  //         setBgImage(data.images[0].url);
-  //         console.log("gett image", data.images[0].url);
-  //       }
-  //     });
-  //   }
-  // }, [currentAlbum]);
-
   useEffect(() => {
-    console.log("useeffect", typeof token, token);
-
-    console.log("useeffect if", typeof token, token);
     s.getMyDevices(function (err, data) {
       if (err) console.error(err);
       else {
@@ -78,8 +50,6 @@ const App = () => {
     });
 
     s.getPlaylist("5Y1aNHCMgst2Yf7Kog6bOk", function (err, data) {
-      console.log("getplaylist");
-
       if (err) console.error(err);
       else {
         setTotalAlbums(data.tracks.total);
@@ -94,19 +64,6 @@ const App = () => {
             else {
               setCurrentAlbum(data.items[0].track);
               setAlbumChartPosition(data.offset);
-              // getArtistImage();
-              // s.getArtist(
-              //   data.items[0].track.artists[0].id,
-              //   function (err, data) {
-              //     if (err) console.error(err);
-              //     else {
-              //       setBgImage(data.images[0].url);
-              //       console.log("gett image", data.images[0].url);
-              //     }
-              //   }
-              // );
-
-              console.log("firstsuccess");
             }
           }
         );
@@ -141,53 +98,22 @@ const App = () => {
       // console.log("RESULT:", getAverageColor(dataUrl), bgColor);
       getAverageColor(dataUrl).then((color) => {
         setBgColor(color.value);
-        console.log(color);
       });
     });
   }, [albumChartPosition]);
 
   useEffect(() => {
     if (currentAlbum) {
-      console.log("getimage", albumChartPosition, token);
       s.getArtist(currentAlbum.artists[0].id, function (err, data) {
         if (err) console.error(err);
         else {
           setBgImage(data.images[0].url);
-          console.log("gett image", data.images[0].url);
         }
       });
     }
   }, [albumChartPosition]);
 
-  // useEffect(() => {
-  //   s.getPlaylist("5Y1aNHCMgst2Yf7Kog6bOk", function (err, data) {
-  //     console.log("getplaylist");
-
-  //     if (err) console.error(err);
-  //     else {
-  //       setTotalAlbums(data.tracks.total);
-  //       s.getPlaylistTracks(
-  //         "5Y1aNHCMgst2Yf7Kog6bOk",
-  //         {
-  //           limit: 1,
-  //           offset: Math.floor(Math.random() * data.tracks.total),
-  //         },
-  //         function (err, data) {
-  //           if (err) console.error(err);
-  //           else {
-  //             setCurrentAlbum(data.items[0].track);
-  //             setAlbumChartPosition(data.offset);
-  //             getArtistImage(data);
-  //           }
-  //         }
-  //       );
-  //     }
-  //   });
-  // }, [token]);
-
   const startAlbum = (position, device, currentAlbum) => {
-    console.log("startalbum");
-
     const PlayParameterObject = {
       context_uri: currentAlbum?.album.external_urls.spotify,
       position_ms: position,
@@ -199,7 +125,6 @@ const App = () => {
         if (err) console.error(err);
         else {
           setPlaying(true);
-          console.log("start album is device", data, data.progress_ms);
         }
       });
     } else {
@@ -210,14 +135,10 @@ const App = () => {
   };
 
   const pauseAlbum = () => {
-    console.log("pause");
-
     s.getMyCurrentPlaybackState(function (err, data) {
-      console.log("get playback state");
       if (err) console.error(err);
       else {
         setPosition(data.progress_ms);
-        console.log("State", data, data.progress_ms);
       }
     });
 
@@ -225,7 +146,6 @@ const App = () => {
       if (err) console.error(err);
       else {
         setPlaying(false);
-        console.log("State", data, data.progress_ms);
       }
     });
 
@@ -233,7 +153,6 @@ const App = () => {
   };
 
   const shuffleAlbum = (totalAlbums) => {
-    console.log("shuffle");
     s.getPlaylistTracks(
       "5Y1aNHCMgst2Yf7Kog6bOk",
       {
@@ -248,7 +167,6 @@ const App = () => {
           // getArtistImage(data);
           setPlaying(false);
           setPosition(0);
-          console.log(data);
         }
       }
     );
@@ -266,9 +184,7 @@ const App = () => {
             className="bgtint"
             style={
               bgColor && {
-                backgroundColor: `rgba(${bgColor[0] - 40},${bgColor[1] - 40},${
-                  bgColor[2] - 40
-                },0.5)`,
+                backgroundColor: `rgba(${bgColor[0]},${bgColor[1]},${bgColor[2]},0.5)`,
               }
             }
           ></div>
@@ -313,24 +229,6 @@ const App = () => {
             </button>
           </div>
 
-          {/* style={{
-              color: `rgb(${
-                Math.floor(bgColor[0] * 1.2) > 200
-                  ? Math.floor(bgColor[0] * 1.2)
-                  : 200
-              },
-              ${
-                Math.floor(bgColor[1] * 1.2) > 200
-                  ? Math.floor(bgColor[1] * 1.2)
-                  : 200
-              },
-              ${
-                Math.floor(bgColor[2] * 1.2) > 200
-                  ? Math.floor(bgColor[2] * 1.2)
-                  : 200
-              })`,
-            }} */}
-
           <div className="headerBlock">
             <span className="heading">{`Världens ${totalAlbums} bästa skivor`}</span>
             <span className="subHeading">
@@ -361,7 +259,7 @@ const App = () => {
           <SpotifyAuth
             redirectUri={REACT_APP_REDIRECT_URI}
             clientID={REACT_APP_CLIENT_ID}
-            title={"Fortsätt med Spotify"}
+            title={"Fortsätt med Spotify "}
             scopes={[
               Scopes.playlistReadPrivate,
               Scopes.userModifyPlaybackState,
