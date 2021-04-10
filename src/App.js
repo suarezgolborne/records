@@ -32,7 +32,6 @@ const App = () => {
   const [nextAlbumCover, setNextAlbumCover] = useState();
   const [nextAlbumBgImage, setNextAlbumBg] = useState();
   const [nextBgColor, setNextBgColor] = useState();
-  const [previousBgColor, setPreviousBgColor] = useState();
 
   const [totalAlbums, setTotalAlbums] = useState("");
 
@@ -151,7 +150,6 @@ const App = () => {
                             setNextBgColor(
                               `rgba(${color.value[0]},${color.value[1]},${color.value[2]},0.6)`
                             );
-                            setPreviousBgColor(bgColor);
                           });
                         }
                       );
@@ -248,7 +246,6 @@ const App = () => {
                 setNextBgColor(
                   `rgba(${color.value[0]},${color.value[1]},${color.value[2]},0.6)`
                 );
-                setPreviousBgColor(bgColor);
               });
             }
           );
@@ -299,54 +296,10 @@ const App = () => {
     },
   };
 
-  // const variantsBgTint = bgColor &&
-  //   nextBgColor && {
-  //     enter: () => {
-  //       return {
-  //         backgroundColor: `rgba(${nextBgColor[0]},${nextBgColor[1]},${nextBgColor[2]},0.6)`,
-  //       };
-  //     },
-  //     center: {
-  //       backgroundColor: `rgba(${bgColor[0]},${bgColor[1]},${bgColor[2]},0.6)`,
-  //     },
-  //     exit: () => {
-  //       return {
-  //         backgroundColor: `rgba(${bgColor[0]},${bgColor[1]},${bgColor[2]},0.6)`,
-  //       };
-  //     },
-  //   };
-
-  // initial="enter"
-  // exit="exit"
-  // bgColor={bgColor}
-
-  console.log(bgColor);
-
   return (
     <div className="app">
       {token ? (
         <>
-          {/* <motion.div
-          layoutId="outline"
-          className="outline"
-          initial={false}
-          animate={{ backgroundColor: bgColor }}
-          transition={{
-            backgroundColor: { duration: 2.4 },
-          }}
-        /> */}
-
-          {/* <BgTint
-            key={`${currentAlbumChartPosition}${bgColor}`}
-            initial={false}
-            variants={variantsBgTint}
-            animate="animate"
-            enter="enter"
-            exit="exit"
-            transition={{
-              backgroundColor: { duration: 2.4 },
-            }}
-          /> */}
           <AnimatePresence initial={false}>
             <BgImage
               BgImage={bgImage}
@@ -356,12 +309,24 @@ const App = () => {
               animate="center"
               exit="exit"
               transition={{
-                x: { type: "spring", stiffness: 300, damping: 30 },
-                opacity: { duration: 0.6 },
+                opacity: { duration: 0.3 },
               }}
             />
-            <BgTint bgColor={bgColor} />
           </AnimatePresence>
+          <AnimatePresence initial={false}>
+            <BgTint
+              key={`${currentAlbumChartPosition}${bgColor}`}
+              variants={variantsBgTint}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              bgColor={bgColor}
+              transition={{
+                opacity: { duration: 0.8 },
+              }}
+            />
+          </AnimatePresence>
+          {/* <BgTint bgColor={bgColor} /> */}
 
           <div className="controls">
             {isPlaying ? (
