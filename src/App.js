@@ -6,7 +6,7 @@ import spotifyApi from "spotify-web-api-js";
 import { SpotifyAuth, Scopes } from "react-spotify-auth";
 import "react-spotify-auth/dist/index.css";
 import { getAverageColor } from "fast-average-color-node";
-import { BgTint, BgImage, CoverImage } from "./App.styled";
+import { BgTint, BgImage, CoverImage, LoginWrapper } from "./App.styled";
 import { AnimatePresence } from "framer-motion";
 
 const {
@@ -67,6 +67,8 @@ const App = () => {
   // get devices and first album
   useEffect(() => {
     if (token) {
+      // window.history.replaceState("", "", "");
+      window.history.pushState("", document.title, window.location.pathname);
       s.getMyDevices(function (err, data) {
         if (err) console.error(err);
         else {
@@ -266,18 +268,15 @@ const App = () => {
     enter: () => {
       return {
         y: -1000,
-        opacity: 0,
-        zIndex: 0,
+        opacity: 1,
       };
     },
     center: {
-      zIndex: 1,
       y: 0,
       opacity: 1,
     },
     exit: () => {
       return {
-        zIndex: 0,
         y: 1000,
         opacity: 0,
       };
@@ -322,7 +321,7 @@ const App = () => {
               exit="exit"
               bgColor={bgColor}
               transition={{
-                opacity: { duration: 0.8 },
+                opacity: { duration: 0.6 },
               }}
             />
           </AnimatePresence>
@@ -360,8 +359,8 @@ const App = () => {
               animate="center"
               exit="exit"
               transition={{
-                y: { type: "spring", stiffness: 250, damping: 25 },
-                opacity: { duration: 0.9 },
+                y: { type: "spring", stiffness: 300, damping: 25 },
+                delay: 3.5,
               }}
             />
 
@@ -401,17 +400,19 @@ const App = () => {
             </div>
           )}
 
-          <SpotifyAuth
-            redirectUri={REACT_APP_REDIRECT_URI}
-            clientID={REACT_APP_CLIENT_ID}
-            title={"Fortsätt med Spotify "}
-            scopes={[
-              Scopes.playlistReadPrivate,
-              Scopes.userModifyPlaybackState,
-              Scopes.userReadCurrentlyPlaying,
-              Scopes.userReadPlaybackState,
-            ]} // either style will work
-          />
+          <LoginWrapper>
+            <SpotifyAuth
+              redirectUri={REACT_APP_REDIRECT_URI}
+              clientID={REACT_APP_CLIENT_ID}
+              title={"Fortsätt med Spotify "}
+              scopes={[
+                Scopes.playlistReadPrivate,
+                Scopes.userModifyPlaybackState,
+                Scopes.userReadCurrentlyPlaying,
+                Scopes.userReadPlaybackState,
+              ]} // either style will work
+            />
+          </LoginWrapper>
         </>
       )}
     </div>

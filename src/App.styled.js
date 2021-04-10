@@ -32,6 +32,10 @@ export const BgContainer = styled.div`
   z-index: -1;
 `;
 
+export const LoginWrapper = styled.div`
+  z-index: 2;
+`;
+
 export const BgImage = styled(motion.div)`
 background-size: cover;
   background-position: 50% 0;
@@ -47,12 +51,12 @@ background-size: cover;
   
   
 }
-
 `;
 
 export const CoverImage = styled(motion.img)`
   width: 100%;
   object-fit: contain;
+  box-shadow: 0 0 26px #0000003d;
 
   @media (min-width: 520px) {
     width: 35vw;
