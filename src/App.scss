@@ -98,9 +98,16 @@ h2 {
 .controls {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  width: 70vw;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  width: 80vw;
+
+  @media (min-width: 520px) {
+    justify-content: space-between;
+    width: 70vw;
+  }
 }
+
 .my-element-to-clip {
   height: 300px;
   // background: linear-gradient(to bottom, #f3b167, #ec38bc, #7303c0, #03001e);
@@ -115,6 +122,13 @@ button {
   background: none;
   border: none;
   outline: none;
+  padding-top: 1em;
+  order: 2;
+
+  @media (min-width: 520px) {
+    padding-top: 0;
+    order: unset;
+  }
 }
 
 .app {

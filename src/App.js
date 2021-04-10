@@ -56,7 +56,7 @@ const App = () => {
           if (data.devices.length > 0) {
             if (activeDevice?.is_active) {
               setDevice(activeDevice.id);
-              s.transferMyPlayback([activeDevice.id]);
+              // s.transferMyPlayback([activeDevice.id]);
             } else {
               setDevice(inactiveDevice.id);
               s.transferMyPlayback([inactiveDevice.id]);
