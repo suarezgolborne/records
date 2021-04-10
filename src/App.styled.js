@@ -1,4 +1,5 @@
 import styled, { keyframes, css } from "styled-components";
+import { motion } from "framer-motion";
 
 export const Title = styled.h1`
   font-size: 1.5em;
@@ -46,12 +47,19 @@ background-size: cover;
 }
 `;
 
-export const CoverImage = styled.img`
-  animation: ${animationMixin};
+// export const CoverImage = styled.img`
+//   animation: ${animationMixin};
+//   width: 100%;
+
+//   @media (min-width: 520px) {
+//     width: 35vw;
+//   }
+// `;
+export const CoverImage = styled(motion.img)`
   width: 100%;
 
   @media (min-width: 520px) {
-    width: 37vw;
+    width: 35vw;
   }
 `;
 

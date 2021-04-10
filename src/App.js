@@ -7,7 +7,6 @@ import { SpotifyAuth, Scopes } from "react-spotify-auth";
 import "react-spotify-auth/dist/index.css";
 import { getAverageColor } from "fast-average-color-node";
 import { BgTint, BgImage, CoverImage } from "./App.styled";
-import { motion } from "framer-motion";
 
 const {
   REACT_APP_CLIENT_ID,
@@ -22,7 +21,9 @@ const App = () => {
   const [isPlaying, setPlaying] = useState(false);
 
   const [currentAlbum, setCurrentAlbum] = useState(null);
-  const [albumChartPosition, setAlbumChartPosition] = useState(null);
+  const [currentAlbumChartPosition, setCurrentAlbumChartPosition] = useState(
+    null
+  );
   const [currentAlbumCover, setCurrentAlbumCover] = useState(null);
   const [bgImage, setBgImage] = useState(null);
   const [bgColor, setBgColor] = useState(null);
@@ -33,7 +34,6 @@ const App = () => {
   const [nextAlbumBgImage, setNextAlbumBg] = useState(null);
 
   const [totalAlbums, setTotalAlbums] = useState("");
-  const [ready, setReady] = useState(true);
 
   const s = new spotifyApi();
   s.setAccessToken(token);
@@ -69,18 +69,22 @@ const App = () => {
         if (err) console.error(err);
         else {
           setTotalAlbums(data.tracks.total);
+          const offset = Math.floor(Math.random() * data.tracks.total);
+          const nextOffset = Math.floor(Math.random() * data.tracks.total);
+          setCurrentAlbumChartPosition(offset);
+          setNextAlbumChartPosition(nextOffset);
+
           s.getPlaylistTracks(
             REACT_APP_SPOTIFY_LIST,
             {
               limit: 1,
-              offset: Math.floor(Math.random() * data.tracks.total),
+              offset: offset,
             },
             function (err, data) {
               if (err) console.error(err);
               else {
                 setCurrentAlbum(data.items[0].track);
                 setCurrentAlbumCover(data.items[0].track.album.images[0].url);
-                setAlbumChartPosition(data.offset);
 
                 s.getArtist(
                   data.items[0].track.artists[0].id,
@@ -91,17 +95,18 @@ const App = () => {
                     }
                   }
                 );
+
                 s.getPlaylistTracks(
                   REACT_APP_SPOTIFY_LIST,
                   {
                     limit: 1,
-                    offset: Math.floor(Math.random() * totalAlbums),
+                    offset: nextOffset,
                   },
                   function (err, data) {
                     if (err) console.error(err);
                     else {
                       setNextAlbum(data.items[0].track);
-                      setNextAlbumChartPosition(data.offset);
+
                       const img = new Image();
                       img.src = data.items[0].track.album.images[0].url;
                       setNextAlbumCover(img.src);
@@ -153,39 +158,7 @@ const App = () => {
         setBgColor(color.value);
       });
     });
-  }, [albumChartPosition]);
-
-  // setNext
-  useEffect(() => {
-    if (token) {
-      s.getPlaylistTracks(
-        REACT_APP_SPOTIFY_LIST,
-        {
-          limit: 1,
-          offset: Math.floor(Math.random() * totalAlbums),
-        },
-        function (err, data) {
-          if (err) console.error(err);
-          else {
-            setNextAlbum(data.items[0].track);
-            setNextAlbumChartPosition(data.offset);
-            const img = new Image();
-            img.src = data.items[0].track.album.images[0].url;
-            setNextAlbumCover(img.src);
-            s.getArtist(
-              data.items[0].track.artists[0].id,
-              function (err, data) {
-                if (err) console.error(err);
-                else {
-                  setNextAlbumBg(data.images[0].url);
-                }
-              }
-            );
-          }
-        }
-      );
-    }
-  }, [albumChartPosition, token]);
+  }, [currentAlbumChartPosition]);
 
   const startAlbum = (position, device, currentAlbum) => {
     const PlayParameterObject = {
@@ -227,31 +200,37 @@ const App = () => {
   };
 
   const shuffleAlbum = () => {
+    // switch to queued album
     setCurrentAlbum(nextAlbum);
-    setAlbumChartPosition(nextAlbumChartPosition);
+    setCurrentAlbumChartPosition(nextAlbumChartPosition);
     setCurrentAlbumCover(nextAlbumCover);
     setBgImage(nextAlbumBgImage);
-    setReady(false);
+    setPlaying(false);
+    setPosition(0);
 
+    // queue next album
+    const nextOffset = Math.floor(Math.random() * totalAlbums);
+    setNextAlbumChartPosition(nextOffset);
     s.getPlaylistTracks(
       REACT_APP_SPOTIFY_LIST,
       {
         limit: 1,
-        offset: Math.floor(Math.random() * totalAlbums),
+        offset: nextOffset,
       },
       function (err, data) {
         if (err) console.error(err);
         else {
           setNextAlbum(data.items[0].track);
-          setNextAlbumChartPosition(data.offset);
-
           const img = new Image();
           img.src = data.items[0].track.album.images[0].url;
           setNextAlbumCover(img.src);
 
-          setReady(true);
-          setPlaying(false);
-          setPosition(0);
+          s.getArtist(data.items[0].track.artists[0].id, function (err, data) {
+            if (err) console.error(err);
+            else {
+              setNextAlbumBg(data.images[0].url);
+            }
+          });
         }
       }
     );
@@ -309,8 +288,9 @@ const App = () => {
               </button>
             )}
 
-            <motion.div
-              key={albumChartPosition}
+            <CoverImage
+              src={currentAlbumCover}
+              key={currentAlbumChartPosition}
               variants={variants}
               initial="enter"
               animate="center"
@@ -319,11 +299,9 @@ const App = () => {
                 y: { type: "spring", stiffness: 250, damping: 25 },
                 opacity: { duration: 0.7 },
               }}
-            >
-              <CoverImage src={currentAlbumCover} />
-            </motion.div>
+            />
 
-            <button disabled={!ready} onClick={() => shuffleAlbum(totalAlbums)}>
+            <button onClick={() => shuffleAlbum(totalAlbums)}>
               <Dice
                 color={"#ffffff"}
                 title={"Slumpa ett nytt album"}
@@ -335,7 +313,8 @@ const App = () => {
           <div className="headerBlock">
             <span className="heading">{`Världens ${totalAlbums} bästa skivor`}</span>
             <span className="subHeading">
-              {albumChartPosition && `Nummer ${albumChartPosition}`}
+              {currentAlbumChartPosition &&
+                `Nummer ${currentAlbumChartPosition}`}
             </span>
           </div>
           {currentAlbum && (

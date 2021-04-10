@@ -54,12 +54,16 @@ h2 {
   bottom: 2.4em;
   top: unset;
   text-align: center;
+  max-width: 80%;
+  align-self: center;
 
   @media (min-width: 670px) {
     text-align: right;
     top: 22px;
     right: 34px;
     bottom: unset;
+    max-width: 50%;
+    align-self: unset;
   }
 }
 
@@ -108,12 +112,6 @@ h2 {
   }
 }
 
-.my-element-to-clip {
-  height: 300px;
-  // background: linear-gradient(to bottom, #f3b167, #ec38bc, #7303c0, #03001e);
-  clip-path: url(#myCurve);
-}
-
 .cover {
   width: 37vw;
 }
@@ -134,7 +132,7 @@ button {
 .app {
   display: flex;
   align-items: center;
-  // justify-content: center;
+
   flex-direction: column;
   height: 100vh;
   weight: 100vw;
