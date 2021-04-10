@@ -91,7 +91,7 @@ const App = () => {
                   function (err, data) {
                     if (err) console.error(err);
                     else {
-                      setBgImage(data.images[0].url);
+                      data.images && setBgImage(data.images[0].url);
                     }
                   }
                 );
@@ -158,7 +158,7 @@ const App = () => {
         setBgColor(color.value);
       });
     });
-  }, [currentAlbumChartPosition]);
+  }, [currentAlbum?.album.images]);
 
   const startAlbum = (position, device, currentAlbum) => {
     const PlayParameterObject = {
@@ -228,7 +228,7 @@ const App = () => {
           s.getArtist(data.items[0].track.artists[0].id, function (err, data) {
             if (err) console.error(err);
             else {
-              setNextAlbumBg(data.images[0].url);
+              data.images && setNextAlbumBg(data.images[0].url);
             }
           });
         }
@@ -264,19 +264,20 @@ const App = () => {
       {token ? (
         <>
           <BgImage BgImage={bgImage} />
-          <BgTint bgColor={bgColor} />´
+          <BgTint bgColor={bgColor} />
           <div className="controls">
             {isPlaying ? (
-              <button onClick={() => pauseAlbum()}>
+              <div className="button" onClick={() => pauseAlbum()}>
                 <Pause
                   color={"#ffffff"}
                   title={"Pausa"}
                   height="50px"
                   width="50px"
                 />
-              </button>
+              </div>
             ) : (
-              <button
+              <div
+                className="button"
                 onClick={() => startAlbum(position, device, currentAlbum)}
               >
                 <Play
@@ -285,7 +286,7 @@ const App = () => {
                   height="50px"
                   width="50px"
                 />
-              </button>
+              </div>
             )}
 
             <CoverImage
@@ -301,14 +302,14 @@ const App = () => {
               }}
             />
 
-            <button onClick={() => shuffleAlbum(totalAlbums)}>
+            <div className="button" onClick={() => shuffleAlbum(totalAlbums)}>
               <Dice
                 color={"#ffffff"}
                 title={"Slumpa ett nytt album"}
                 height="50px"
                 width="50px"
               />
-            </button>
+            </div>
           </div>
           <div className="headerBlock">
             <span className="heading">{`Världens ${totalAlbums} bästa skivor`}</span>

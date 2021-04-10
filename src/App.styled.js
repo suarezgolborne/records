@@ -50,7 +50,6 @@ background-size: cover;
 export const CoverImage = styled(motion.img)`
   width: 100%;
   object-fit: contain;
-  align-self: flex-start;
 
   @media (min-width: 520px) {
     width: 35vw;
