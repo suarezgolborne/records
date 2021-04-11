@@ -94,7 +94,7 @@ const App = () => {
           let offset = Math.floor(Math.random() * data.tracks.total);
           let nextOffset = Math.floor(Math.random() * data.tracks.total);
           setCurrentAlbumChartPosition(offset);
-          // setNextAlbumChartPosition(nextOffset);
+          setNextAlbumChartPosition(nextOffset);
 
           s.getPlaylistTracks(
             REACT_APP_SPOTIFY_LIST,
@@ -324,20 +324,6 @@ const App = () => {
               }}
             />
           </AnimatePresence>
-
-          {/* <BgImage
-            BgImage={bgImage}
-            key={`${currentAlbumChartPosition}${bgColor}`}
-            variants={variantsBgTint}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={{
-              opacity: { duration: 0.3 },
-            }}
-          /> */}
-
-          {/* <BgTint bgColor={bgColor} /> */}
 
           <div className="controls">
             {isPlaying ? (
