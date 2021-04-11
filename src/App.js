@@ -20,6 +20,7 @@ const App = () => {
   const [device, setDevice] = useState();
   const [position, setPosition] = useState(0);
   const [isPlaying, setPlaying] = useState();
+  const [totalAlbums, setTotalAlbums] = useState("");
 
   const [currentAlbum, setCurrentAlbum] = useState();
   const [currentAlbumChartPosition, setCurrentAlbumChartPosition] = useState();
@@ -32,8 +33,6 @@ const App = () => {
   const [nextAlbumCover, setNextAlbumCover] = useState();
   const [nextAlbumBgImage, setNextAlbumBg] = useState();
   const [nextBgColor, setNextBgColor] = useState();
-
-  const [totalAlbums, setTotalAlbums] = useState("");
 
   const s = new spotifyApi();
   s.setAccessToken(token);
@@ -325,6 +324,19 @@ const App = () => {
               }}
             />
           </AnimatePresence>
+
+          {/* <BgImage
+            BgImage={bgImage}
+            key={`${currentAlbumChartPosition}${bgColor}`}
+            variants={variantsBgTint}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{
+              opacity: { duration: 0.3 },
+            }}
+          /> */}
+
           {/* <BgTint bgColor={bgColor} /> */}
 
           <div className="controls">

@@ -37,43 +37,27 @@ export const LoginWrapper = styled.div`
 `;
 
 export const BgImage = styled(motion.div)`
-background-size: cover;
+  background-size: cover;
   background-position: 50% 0;
   background-repeat: no-repeat;
   overflow: hidden;
   position: absolute;
   width: 100%;
   height: 100%;
-  z-index: -1;
+  z-index: -3;
   will-change: opacity;  
   filter: grayscale(1) brightness(0.45) contrast(1.3);
   background-image: ${(props) => props.BgImage && `url(${props.BgImage})`} 
-  
-  
+
 }
 `;
-
-export const CoverImage = styled(motion.img)`
-  width: 100%;
-  object-fit: contain;
-  box-shadow: 0 0 26px #0000003d;
-
-  @media (min-width: 520px) {
-    width: 35vw;
-  }
-`;
-
-/* background-color: ${(props) => props.bgColor}  */
-/* background-color: ${(props) =>
-  props.bgColor &&
-  `rgba(${props.bgColor[0]},${props.bgColor[1]},${props.bgColor[2]},0.6)`}  */
 
 export const BgTint = styled(motion.div)`
   background-size: cover;
   /* background-color: #46472ed9; */
   opacity: 1;
   position: absolute;
-  z-index: -1;
+  z-index: 0;
   width: 100%;
   height: 100%;
   width: calc(100% - 40px);
@@ -87,6 +71,23 @@ export const BgTint = styled(motion.div)`
 }
 
 `;
+
+export const CoverImage = styled(motion.img)`
+  width: 100%;
+  object-fit: contain;
+  box-shadow: 0 0 26px #0000003d;
+  margin-bottom: 4.5vh;
+  z-index: 1;
+
+  @media (min-width: 520px) {
+    width: 35vw;
+  }
+`;
+
+/* background-color: ${(props) => props.bgColor}  */
+/* background-color: ${(props) =>
+  props.bgColor &&
+  `rgba(${props.bgColor[0]},${props.bgColor[1]},${props.bgColor[2]},0.6)`}  */
 
 // Here we create a component that will rotate everything we pass in over two seconds
 /* const Rotate = styled.div`
