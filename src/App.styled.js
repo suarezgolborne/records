@@ -38,7 +38,7 @@ export const LoginWrapper = styled.div`
 
 export const BgImage = styled(motion.div)`
   background-size: cover;
-  background-position: 50% 0;
+  background-position: 50% 50%;
   background-repeat: no-repeat;
   overflow: hidden;
   position: absolute;

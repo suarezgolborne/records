@@ -142,6 +142,7 @@ const App = () => {
 
                       const img = new Image();
                       img.src = data.items[0].track.album.images[0].url;
+
                       setNextAlbumCover(img.src);
 
                       getBgColor(
