@@ -187,3 +187,18 @@ h2 {
   border: 20px solid #ffffff80;
   filter: contrast(1.6) brightness(0.5);
 }
+
+.btnlogin {
+  background: none;
+  border: 0;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.login {
+  fill: white;
+  width: 40px;
+  margin-bottom: 5px;
+}

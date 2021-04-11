@@ -5549,6 +5549,11 @@ get-package-type@^0.1.0:
   resolved "https://registry.yarnpkg.com/get-package-type/-/get-package-type-0.1.0.tgz#8de2d803cff44df3bc6c456e6668b36c3926e11a"
   integrity sha512-pjzuKtY64GYfWizNAJ0fr9VqttZkNiK2iS430LtIHzjBEr6bX8Am2zm4sW4Ro5wjWW5cAlRL1qAMTcXbjNAO2Q==
 
+get-spotify-client-credentials@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/get-spotify-client-credentials/-/get-spotify-client-credentials-1.0.0.tgz#13f3a45cc74915c995e8518c04300216c64becc7"
+  integrity sha1-E/OkXMdJFcmV6FGMBDACFsZL7Mc=
+
 get-stream@^4.0.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/get-stream/-/get-stream-4.1.0.tgz#c1b255575f3dc21d59bfc79cd3d2b46b1c3a54b5"
