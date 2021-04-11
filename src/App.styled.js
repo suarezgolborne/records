@@ -44,6 +44,16 @@ export const LoginWrapper = styled.div`
     padding-top: 0;
     order: unset;
   }
+
+  &:hover {
+    transform: scale(1.1);
+    transition: all 0.3s;
+  }
+
+  &:hover .login {
+    fill: white;
+    filter: drop-shadow(0 0 5px #535453c7);
+  }
 `;
 
 export const BgImage = styled(motion.div)`

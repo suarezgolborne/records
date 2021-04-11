@@ -403,7 +403,7 @@ const App = () => {
               {isPlaying ? (
                 <div className="button" onClick={() => pauseAlbum()}>
                   <Pause
-                    color={"#ffffff"}
+                    color={"#ffffffde"}
                     title={"Pausa"}
                     height="50px"
                     width="50px"
@@ -415,7 +415,7 @@ const App = () => {
                   onClick={() => startAlbum(position, device, currentAlbum)}
                 >
                   <Play
-                    color={"#ffffff"}
+                    color={"#ffffffde"}
                     title={"Starta"}
                     height="50px"
                     width="50px"
@@ -456,7 +456,7 @@ const App = () => {
 
           <div className="button" onClick={() => shuffleAlbum(totalAlbums)}>
             <Dice
-              color={"#ffffff"}
+              color={"#ffffffde"}
               title={"Slumpa ett nytt album"}
               height="50px"
               width="50px"
