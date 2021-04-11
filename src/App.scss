@@ -123,10 +123,10 @@ h2 {
     order: unset;
   }
 
-  &:hover {
-    transform: scale(1.1);
-    transition: all 0.3s;
-  }
+  // &:hover {
+  //   transform: scale(1.1);
+  //   transition: all 0.3s;
+  // }
 
   &:hover svg {
     fill: #ffffff;

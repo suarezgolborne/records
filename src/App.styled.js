@@ -45,10 +45,10 @@ export const LoginWrapper = styled.div`
     order: unset;
   }
 
-  &:hover {
+  /* &:hover {
     transform: scale(1.1);
     transition: all 0.3s;
-  }
+  } */
 
   &:hover .login {
     fill: white;

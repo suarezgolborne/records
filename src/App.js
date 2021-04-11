@@ -7,7 +7,7 @@ import { SpotifyAuth, Scopes } from "react-spotify-auth";
 // import "react-spotify-auth/dist/index.css";
 import { getAverageColor } from "fast-average-color-node";
 import { BgTint, BgImage, CoverImage, LoginWrapper } from "./App.styled";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import request from "request";
 
 const {
@@ -401,16 +401,23 @@ const App = () => {
           {hasScopes ? (
             <>
               {isPlaying ? (
-                <div className="button" onClick={() => pauseAlbum()}>
+                <motion.div
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  className="button"
+                  onClick={() => pauseAlbum()}
+                >
                   <Pause
                     color={"#ffffffde"}
                     title={"Pausa"}
                     height="50px"
                     width="50px"
                   />
-                </div>
+                </motion.div>
               ) : (
-                <div
+                <motion.div
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
                   className="button"
                   onClick={() => startAlbum(position, device, currentAlbum)}
                 >
@@ -420,25 +427,32 @@ const App = () => {
                     height="50px"
                     width="50px"
                   />
-                </div>
+                </motion.div>
               )}
             </>
           ) : (
             <LoginWrapper>
-              <SpotifyAuth
-                redirectUri={REACT_APP_REDIRECT_URI}
-                clientID={REACT_APP_CLIENT_ID}
-                title={""}
-                logoClassName={"login"}
-                btnClassName={"btnlogin"}
-                scopes={[
-                  Scopes.playlistReadPrivate,
-                  Scopes.userModifyPlaybackState,
-                  Scopes.userReadCurrentlyPlaying,
-                  Scopes.userReadPlaybackState,
-                ]}
-                onClick={() => setHasScopes(true)}
-              />
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="button"
+                onClick={() => shuffleAlbum(totalAlbums)}
+              >
+                <SpotifyAuth
+                  redirectUri={REACT_APP_REDIRECT_URI}
+                  clientID={REACT_APP_CLIENT_ID}
+                  title={""}
+                  logoClassName={"login"}
+                  btnClassName={"btnlogin"}
+                  scopes={[
+                    Scopes.playlistReadPrivate,
+                    Scopes.userModifyPlaybackState,
+                    Scopes.userReadCurrentlyPlaying,
+                    Scopes.userReadPlaybackState,
+                  ]}
+                  onClick={() => setHasScopes(true)}
+                />
+              </motion.div>
             </LoginWrapper>
           )}
           <CoverImage
@@ -454,14 +468,19 @@ const App = () => {
             }}
           />
 
-          <div className="button" onClick={() => shuffleAlbum(totalAlbums)}>
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            className="button"
+            onClick={() => shuffleAlbum(totalAlbums)}
+          >
             <Dice
               color={"#ffffffde"}
               title={"Slumpa ett nytt album"}
               height="50px"
               width="50px"
             />
-          </div>
+          </motion.div>
         </div>
         <div className="headerBlock">
           <span className="heading">{`Världens ${totalAlbums} bästa skivor`}</span>
