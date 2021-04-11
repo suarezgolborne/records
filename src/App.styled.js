@@ -34,6 +34,16 @@ export const BgContainer = styled.div`
 
 export const LoginWrapper = styled.div`
   z-index: 2;
+  background: none;
+  border: none;
+  outline: none;
+  padding-top: 1em;
+  order: 2;
+
+  @media (min-width: 520px) {
+    padding-top: 0;
+    order: unset;
+  }
 `;
 
 export const BgImage = styled(motion.div)`

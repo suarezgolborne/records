@@ -4,11 +4,10 @@ import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import spotifyApi from "spotify-web-api-js";
 import { SpotifyAuth, Scopes } from "react-spotify-auth";
-import "react-spotify-auth/dist/index.css";
+// import "react-spotify-auth/dist/index.css";
 import { getAverageColor } from "fast-average-color-node";
 import { BgTint, BgImage, CoverImage, LoginWrapper } from "./App.styled";
 import { AnimatePresence } from "framer-motion";
-// import SpotifyWebApi from "spotify-web-api-node";
 import request from "request";
 
 const {
@@ -39,7 +38,6 @@ const App = () => {
   const [nextBgColor, setNextBgColor] = useState();
 
   const s = new spotifyApi();
-  // s.setAccessToken(token);
 
   useEffect(() => {
     if (!Cookies.get("spotifyAuthToken")) {
@@ -61,14 +59,12 @@ const App = () => {
 
       request.post(authOptions, function (error, response, body) {
         if (!error && response.statusCode === 200) {
-          // var token = body.access_token;
           setToken(body.access_token);
           s.setAccessToken(body.access_token);
           setHasScopes(false);
         }
       });
     } else {
-      // s.setAccessToken(Cookies.get("spotifyAuthToken"));
       setHasScopes(true);
       setToken(Cookies.get("spotifyAuthToken"));
       s.setAccessToken(Cookies.get("spotifyAuthToken"));
